@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ JBoss, Home of Professional Open Source
+  ~ Copyright 2009 Red Hat Inc. and/or its affiliates and other
+  ~ contributors as indicated by the @author tags. All rights reserved.
+  ~ See the copyright.txt in the distribution for a full listing of
+  ~ individual contributors.
+  ~
+  ~ This is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU Lesser General Public License as
+  ~ published by the Free Software Foundation; either version 2.1 of
+  ~ the License, or (at your option) any later version.
+  ~
+  ~ This software is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ Lesser General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Lesser General Public
+  ~ License along with this software; if not, write to the Free
+  ~ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+  ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+  -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:element name="ehcache" >
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="1" ref="diskStore"/>
+                <xs:element minOccurs="0" maxOccurs="1"
+                            ref="cacheManagerEventListenerFactory"/>
+                <xs:element minOccurs="0" maxOccurs="1"
+                            ref="cacheManagerPeerProviderFactory"/>
+                <xs:element minOccurs="0" maxOccurs="1"
+                            ref="cacheManagerPeerListenerFactory"/>
+                <xs:element ref="defaultCache"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="cache"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="diskStore">
+        <xs:complexType>
+            <xs:attribute name="path" use="optional" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="cacheManagerEventListenerFactory">
+        <xs:complexType>
+            <xs:attribute name="class" use="required"/>
+            <xs:attribute name="properties" use="optional"/>
+            <xs:attribute name="propertySeparator" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="cacheManagerPeerProviderFactory">
+        <xs:complexType>
+            <xs:attribute name="class" use="required"/>
+            <xs:attribute name="properties" use="optional"/>
+            <xs:attribute name="propertySeparator" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="cacheManagerPeerListenerFactory">
+        <xs:complexType>
+            <xs:attribute name="class" use="required"/>
+            <xs:attribute name="properties" use="optional"/>
+            <xs:attribute name="propertySeparator" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+    <!-- add clone support for addition of cacheExceptionHandler. Important! -->
+    <xs:element name="defaultCache">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="cacheEventListenerFactory"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="cacheExtensionFactory"/>
+                <xs:element minOccurs="0" maxOccurs="1" ref="bootstrapCacheLoaderFactory"/>
+                <xs:element minOccurs="0" maxOccurs="1" ref="cacheExceptionHandlerFactory"/>
+                <xs:element minOccurs="0" maxOccurs="1" ref="cacheLoaderFactory"/>
+            </xs:sequence>
+            <xs:attribute name="diskExpiryThreadIntervalSeconds" use="optional" type="xs:integer"/>
+            <xs:attribute name="diskSpoolBufferSizeMB" use="optional" type="xs:integer"/>
+            <xs:attribute name="diskPersistent" use="optional" type="xs:boolean"/>
+            <xs:attribute name="eternal" use="required" type="xs:boolean"/>
+            <xs:attribute name="maxElementsInMemory" use="required" type="xs:integer"/>
+            <xs:attribute name="memoryStoreEvictionPolicy" use="optional" type="xs:string"/>
+            <xs:attribute name="overflowToDisk" use="required" type="xs:boolean"/>
+            <xs:attribute name="timeToIdleSeconds" use="optional" type="xs:integer"/>
+            <xs:attribute name="timeToLiveSeconds" use="optional" type="xs:integer"/>
+            <xs:attribute name="maxElementsOnDisk" use="optional" type="xs:integer"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="cache">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="cacheEventListenerFactory"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="cacheExtensionFactory"/>
+                <xs:element minOccurs="0" maxOccurs="1" ref="bootstrapCacheLoaderFactory"/>
+                <xs:element minOccurs="0" maxOccurs="1" ref="cacheExceptionHandlerFactory"/>
+                <xs:element minOccurs="0" maxOccurs="1" ref="cacheLoaderFactory"/>
+            </xs:sequence>
+            <xs:attribute name="diskExpiryThreadIntervalSeconds" use="optional" type="xs:integer"/>
+            <xs:attribute name="diskSpoolBufferSizeMB" use="optional" type="xs:integer"/>
+            <xs:attribute name="diskPersistent" use="optional" type="xs:boolean"/>
+            <xs:attribute name="eternal" use="required" type="xs:boolean"/>
+            <xs:attribute name="maxElementsInMemory" use="required" type="xs:integer"/>
+            <xs:attribute name="memoryStoreEvictionPolicy" use="optional" type="xs:string"/>
+            <xs:attribute name="name" use="required" type="xs:string"/>
+            <xs:attribute name="overflowToDisk" use="required" type="xs:boolean"/>
+            <xs:attribute name="timeToIdleSeconds" use="optional" type="xs:integer"/>
+            <xs:attribute name="timeToLiveSeconds" use="optional" type="xs:integer"/>
+            <xs:attribute name="maxElementsOnDisk" use="optional" type="xs:integer"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="cacheEventListenerFactory">
+        <xs:complexType>
+            <xs:attribute name="class" use="required"/>
+            <xs:attribute name="properties" use="optional"/>
+            <xs:attribute name="propertySeparator" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="bootstrapCacheLoaderFactory">
+        <xs:complexType>
+            <xs:attribute name="class" use="required"/>
+            <xs:attribute name="properties" use="optional"/>
+            <xs:attribute name="propertySeparator" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="cacheExtensionFactory">
+        <xs:complexType>
+            <xs:attribute name="class" use="required"/>
+            <xs:attribute name="properties" use="optional"/>
+            <xs:attribute name="propertySeparator" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="cacheExceptionHandlerFactory">
+        <xs:complexType>
+            <xs:attribute name="class" use="required"/>
+            <xs:attribute name="properties" use="optional"/>
+            <xs:attribute name="propertySeparator" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="cacheLoaderFactory">
+        <xs:complexType>
+            <xs:attribute name="class" use="required"/>
+            <xs:attribute name="properties" use="optional"/>
+            <xs:attribute name="propertySeparator" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

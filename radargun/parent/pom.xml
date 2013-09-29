@@ -1,0 +1,238 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <artifactId>radargun-parent</artifactId>
+   <version>1.1.0-SNAPSHOT</version>
+   <groupId>org.radargun</groupId>
+   <name>RadarGun - Parent POM</name>
+   <description>The parent POM for RadarGun</description>
+   <packaging>pom</packaging>
+   <url>http://github.com/infinispan/radargun</url>
+
+   <licenses>
+      <license>
+         <name>GNU Lesser General Public License</name>
+         <url>http://www.gnu.org/copyleft/lesser.html</url>
+         <distribution>repo</distribution>
+      </license>
+   </licenses>
+
+   <scm>
+      <connection>scm:git:git://github.com/infinispan/radargun.git</connection>
+      <developerConnection>scm:git:git@github.com:infinispan/radargun.git</developerConnection>
+      <url>scm:git:https://github.com/infinispan/radargun</url>
+   </scm>
+
+   <issueManagement>
+      <system>GitHub</system>
+      <url>https://github.com/infinispan/radargun/issues</url>
+   </issueManagement>
+
+   <developers>
+      <developer>
+         <name>Mircea Markus</name>
+         <roles>
+            <role>Project founder</role>
+         </roles>
+         <timezone>GMT</timezone>
+      </developer>
+      
+      <developer>
+         <name>Manik Surtani</name>
+         <roles>
+            <role>Project founder</role>
+         </roles>
+         <timezone>GMT</timezone>
+      </developer>
+   </developers>
+
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.4.3</version>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-eclipse-plugin</artifactId>
+            <version>2.7</version>
+            <configuration>
+               <downloadSources>true</downloadSources>
+               <buildOutputDirectory>${basedir}/eclipse-output</buildOutputDirectory>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-idea-plugin</artifactId>
+            <version>2.2</version>
+            <configuration>
+               <downloadSources>true</downloadSources>
+            </configuration>
+         </plugin>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>1.0-beta-1</version>
+            <executions>
+               <execution>
+                  <id>enforce-java</id>
+                  <goals>
+                     <goal>enforce</goal>
+                  </goals>
+                  <configuration>
+                     <rules>
+                        <requireJavaVersion>
+                           <version>[1.6,)</version>
+                        </requireJavaVersion>
+                        <requireMavenVersion>
+                           <version>[2.1.0,)</version>
+                        </requireMavenVersion>
+                     </rules>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+         <!-- by default, compile to JDK 1.6 compatibility (individual modules and/or user can override) -->
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>2.3.2</version>
+            <configuration>
+               <source>1.6</source>
+               <target>1.6</target>
+               <encoding>UTF-8</encoding>
+            </configuration>
+         </plugin>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>2.4.3</version>
+            <configuration>
+               <encoding>UTF-8</encoding>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>2.3</version>
+            <configuration>
+               <archive>
+                  <manifest>
+                     <mainClass>org.radargun.Version</mainClass>
+                  </manifest>
+               </archive>
+               <excludes>
+                  <exclude>**/*.xml</exclude>
+                  <exclude>**/*.sh</exclude>
+                  <exclude>**/*.py</exclude>
+                  <exclude>**/*.bat</exclude>
+                  <exclude>**/*.txt</exclude>
+               </excludes>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>2.2-beta-3</version>
+            <executions>
+               <execution>
+                  <id>assemble</id>
+                  <phase>package</phase>
+                  <goals>
+                     <goal>single</goal>
+                  </goals>
+               </execution>
+            </executions>
+            <configuration>
+               <descriptors>
+                  <descriptor>src/main/resources/assembly/bin.xml</descriptor>
+               </descriptors>
+               <finalName>${project.artifactId}</finalName>
+               <outputDirectory>target/distribution</outputDirectory>
+               <workDirectory>target/assembly/work</workDirectory>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
+
+   <dependencies>
+      <dependency>
+         <groupId>org.testng</groupId>
+         <artifactId>testng</artifactId>
+         <version>5.8</version>
+         <scope>test</scope>
+         <classifier>jdk15</classifier>
+      </dependency>
+   </dependencies>
+
+   <repositories>
+      <!-- basic JBoss repository -->
+		<repository>
+			<id>cloudtm</id>
+			<name>Cloud-TM's Maven Repository</name>
+			<url>http://cloudtm.ist.utl.pt:8083/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>daily</updatePolicy>
+			</snapshots>
+		</repository>
+      <repository>
+         <id>jboss-public-repository-group</id>
+         <url>http://repository.jboss.org/nexus/content/groups/public-jboss</url>
+      </repository>
+   </repositories>
+
+   <pluginRepositories>
+      <pluginRepository>
+         <id>Main Maven Repo</id>
+         <url>http://repo1.maven.org/maven2/</url>
+      </pluginRepository>
+      <pluginRepository>
+         <id>snapshots.repository.codehaus.org</id>
+         <url>http://snapshots.repository.codehaus.org</url>
+      </pluginRepository>
+		<pluginRepository>
+			<id>cloudtm</id>
+			<name>Cloud-TM's Maven Repository</name>
+			<url>http://cloudtm.ist.utl.pt:8083/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>daily</updatePolicy>
+			</snapshots>
+		</pluginRepository>
+      <pluginRepository>
+         <id>jboss-public-repository-group</id>
+         <url>http://repository.jboss.org/nexus/content/groups/public-jboss</url>
+      </pluginRepository>
+   </pluginRepositories>
+
+   <distributionManagement>
+      <repository>
+         <id>jboss-staging-releases-repository</id>
+         <url>https://repository.jboss.org/nexus/service/local/staging/deploy/maven2/</url>
+      </repository>
+      <snapshotRepository>
+         <id>jboss-snapshots-repository</id>
+         <url>https://repository.jboss.org/nexus/content/repositories/snapshots/</url>
+      </snapshotRepository>
+   </distributionManagement>
+
+   <properties>
+      <!-- By default don't run unit tests for the fwk! -->
+      <maven.test.skip>true</maven.test.skip>
+   </properties>
+</project>

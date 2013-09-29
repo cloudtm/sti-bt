@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ JBoss, Home of Professional Open Source
+  ~ Copyright 2009 Red Hat Inc. and/or its affiliates and other
+  ~ contributors as indicated by the @author tags. All rights reserved.
+  ~ See the copyright.txt in the distribution for a full listing of
+  ~ individual contributors.
+  ~
+  ~ This is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU Lesser General Public License as
+  ~ published by the Free Software Foundation; either version 2.1 of
+  ~ the License, or (at your option) any later version.
+  ~
+  ~ This software is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ Lesser General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Lesser General Public
+  ~ License along with this software; if not, write to the Free
+  ~ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+  ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+  -->
+<jbosscache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:jboss:jbosscache-core:config:3.0">
+
+    <!-- Configure the TransactionManager -->
+    <transaction transactionManagerLookupClass="org.jboss.cache.transaction.GenericTransactionManagerLookup"/>
+
+    <!-- Specific eviction policy configurations -->
+    <eviction wakeUpInterval="5000">
+        <!-- Cache wide default -->
+        <default algorithmClass="org.jboss.cache.eviction.LRUAlgorithm" eventQueueSize="200000">
+            <property name="maxNodes" value="5000"/>
+            <property name="timeToLive" value="3000"/>
+        </default>
+        <region name="/org/jboss/test/data">
+            <property name="maxNodes" value="100"/>
+            <property name="timeToLive" value="3000"/>
+        </region>
+    </eviction>
+
+    <!-- Cache Passivation for Tree Cache
+On passivation, The objects are written to the backend store on eviction if passivation
+is true, otherwise the objects are persisted. On activation, the objects are restored in
+the memory cache and removed from the cache loader if 'passivation' attribute is true,
+otherwise the objects are only loaded from the cache loader -->
+    <loaders passivation="false" shared="false">
+        <preload>
+            <node fqn="/"/>
+        </preload>
+        <!-- if passivation is true, only the first cache loader is used; the rest are ignored -->
+        <loader
+                class="org.jboss.cache.loader.JDBCCacheLoader"
+                async="false"
+                fetchPersistentState="true"
+                ignoreModifications="false"
+                purgeOnStartup="false">
+            <properties>
+                cache.jdbc.table.name=jbosscache
+                cache.jdbc.table.create=true
+                cache.jdbc.table.drop=true
+                cache.jdbc.table.primarykey=jbosscache_pk
+                cache.jdbc.fqn.column=fqn
+                cache.jdbc.fqn.type=VARCHAR(255)
+                cache.jdbc.node.column=node
+                cache.jdbc.node.type=BINARY
+                cache.jdbc.parent.column=parent
+                cache.jdbc.driver=org.hsqldb.jdbcDriver
+                cache.jdbc.url=jdbc:hsqldb:mem:jbosscache
+                cache.jdbc.user=sa
+                cache.jdbc.password=
+            </properties>
+        </loader>
+    </loaders>
+</jbosscache>

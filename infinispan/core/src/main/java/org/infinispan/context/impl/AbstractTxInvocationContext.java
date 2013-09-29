@@ -1,0 +1,147 @@
+/*
+ * JBoss, Home of Professional Open Source
+ * Copyright 2009 Red Hat Inc. and/or its affiliates and other
+ * contributors as indicated by the @author tags. All rights reserved.
+ * See the copyright.txt in the distribution for a full listing of
+ * individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
+package org.infinispan.context.impl;
+
+import javax.transaction.Transaction;
+
+import org.infinispan.container.versioning.EntryVersion;
+import org.infinispan.container.versioning.VersionGenerator;
+import org.infinispan.remoting.transport.Address;
+import org.infinispan.transaction.AbstractCacheTransaction;
+
+import java.util.Collection;
+import java.util.Set;
+
+/**
+ * Support class for {@link org.infinispan.context.impl.TxInvocationContext}.
+ *
+ * @author Mircea.Markus@jboss.com
+ * @author Galder Zamarreño
+ * @since 4.0
+ */
+public abstract class AbstractTxInvocationContext extends AbstractInvocationContext implements TxInvocationContext {
+
+   private Transaction transaction;
+
+   private boolean implicitTransaction;
+
+   @Override
+   public boolean hasModifications() {
+      return getModifications() != null && !getModifications().isEmpty();
+   }
+
+   @Override
+   public Set<Object> getAffectedKeys() {
+      return getCacheTransaction().getAffectedKeys();
+   }
+
+   @Override
+   public void addAllAffectedKeys(Collection<Object> keys) {
+      if (keys != null && !keys.isEmpty()) {
+         getCacheTransaction().addAllAffectedKeys(keys);
+      }
+   }
+
+   @Override
+   public void addAffectedKey(Object key) {
+      getCacheTransaction().addAffectedKey(key);
+   }
+
+   @Override
+   public void setImplicitTransaction(boolean implicit) {
+      this.implicitTransaction = implicit;
+   }
+
+   @Override
+   public boolean isImplicitTransaction() {
+      return this.implicitTransaction;
+   }
+
+   @Override
+   public boolean isInTxScope() {
+      return true;
+   }
+
+   public TxInvocationContext setTransaction(Transaction transaction) {
+      this.transaction = transaction;
+      return this;
+   }
+
+   @Override
+   public Transaction getTransaction() {
+      return transaction;
+   }
+
+   @Override
+   public final void clearLockedKeys() {
+      getCacheTransaction().clearLockedKeys();
+   }
+
+   @Override
+   public abstract AbstractCacheTransaction getCacheTransaction();
+
+   @Override
+   public EntryVersion calculateVersionToRead(VersionGenerator versionGenerator) {
+      return getCacheTransaction().calculateVersionToRead(versionGenerator);
+   }
+
+   @Override
+   public void setVersionToRead(EntryVersion entryVersion) {
+      //no-op
+   }
+
+   @Override
+   public Collection<Object> getReadSet() {
+      return getCacheTransaction().getReadKeys();
+   }
+   
+   @Override
+   public void addReadFrom(Address address) {
+      getCacheTransaction().addReadFrom(address);
+   }
+
+   @Override
+   public Set<Address> getAlreadyReadFrom() {
+      return getCacheTransaction().getReadFrom();
+   }
+
+   @Override
+   public void setTransactionVersion(EntryVersion version) {
+      getCacheTransaction().setTransactionVersion(version);
+   }
+
+   @Override
+   public EntryVersion getTransactionVersion() {
+      return getCacheTransaction().getTransactionVersion();
+   }
+
+   @Override
+   public boolean hasAlreadyReadOnThisNode() {
+      return getCacheTransaction().hasAlreadyReadOnThisNode();
+   }
+
+   @Override
+   public void setAlreadyReadOnThisNode(boolean value) {
+      getCacheTransaction().setAlreadyReadOnThisNode(value);
+   }
+}

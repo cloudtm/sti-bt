@@ -1,0 +1,90 @@
+<!--
+  ~ JBoss, Home of Professional Open Source
+  ~ Copyright 2013 Red Hat Inc. and/or its affiliates and other contributors
+  ~ as indicated by the @author tags. All rights reserved.
+  ~ See the copyright.txt in the distribution for a
+  ~ full listing of individual contributors.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use,
+  ~ modify, copy, or redistribute it subject to the terms and conditions
+  ~ of the GNU Lesser General Public License, v. 2.1.
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT A
+  ~ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+  ~ PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
+  ~ You should have received a copy of the GNU Lesser General Public License,
+  ~ v.2.1 along with this distribution; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ~ MA  02110-1301, USA.
+  -->
+
+<config
+        xmlns="urn:org:jgroups"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="urn:org:jgroups http://www.jgroups.org/schema/JGroups-3.3.xsd">
+    <TCP
+            bind_port="7800"
+            recv_buf_size="${tcp.recv_buf_size:20M}"
+            send_buf_size="${tcp.send_buf_size:640K}"
+            use_send_queues="true"
+            sock_conn_timeout="300"
+            loopback="false"
+            discard_incompatible_packets="true"
+            enable_bundling="false"
+            enable_unicast_bundling="false"
+            enable_diagnostics="true"
+            thread_naming_pattern="cl"
+            thread_pool.enabled="true"
+            thread_pool.min_threads="2"
+            thread_pool.max_threads="32"
+            thread_pool.keep_alive_time="60000"
+            thread_pool.queue_enabled="true"
+            thread_pool.queue_max_size="1000"
+            thread_pool.rejection_policy="discard"
+            oob_thread_pool.enabled="true"
+            oob_thread_pool.min_threads="2"
+            oob_thread_pool.max_threads="32"
+            oob_thread_pool.keep_alive_time="60000"
+            oob_thread_pool.queue_enabled="true"
+            oob_thread_pool.queue_max_size="1000"
+            oob_thread_pool.rejection_policy="discard"
+            />
+    <MPING
+            mcast_addr="${jgroups.udp.mcast_addr:224.0.0.6}"
+            mcast_port="${jgroups.udp.mcast_port:46666}"
+            ip_ttl="${jgroups.udp.ip_ttl:8}"
+            num_initial_members="5"
+            break_on_coord_rsp="true"
+            stagger_timeout="3000"
+            timeout="15000"
+            />
+    <MERGE2
+            max_interval="30000"
+            min_interval="10000"
+            />
+    <FD_SOCK/>
+    <BARRIER/>
+    <pbcast.NAKACK2
+            use_mcast_xmit="false"
+            discard_delivered_msgs="true"
+            xmit_interval="1000"
+            />
+    <UNICAST3
+            xmit_interval="1000"
+            conn_expiry_timeout="0"
+            />
+    <pbcast.STABLE
+            stability_delay="2000"
+            desired_avg_gossip="10000"
+            max_bytes="10M"
+            cap="0.001"
+            />
+    <pbcast.GMS
+            print_local_addr="true"
+            join_timeout="3000"
+            max_bundling_time="500"
+            view_bundling="true"
+            />
+    <SEQUENCER/>
+    <tom.TOA/>
+    <pbcast.STATE_TRANSFER/>
+</config>

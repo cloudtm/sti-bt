@@ -1,0 +1,28 @@
+#!/bin/bash
+
+WORKING_DIR=`cd $(dirname $0); pwd`
+
+echo "loading environment..."
+. ${WORKING_DIR}/environment.sh
+
+while [ -n "$1" ]; do
+  case $1 in
+    clean)
+    	clean_master
+    	clean_slaves ${CLUSTER}
+    	shift 1;;
+    kill)
+    	kill_java ${CLUSTER}
+			shift 1;;
+		copy)
+			copy_to_all ${CLUSTER}
+			shift 1;;
+		mkdir)
+			for i in ${CLUSTER}; do echo $i; ssh $i  "mkdir ${RADARGUN_DIR}"; done
+			shift 1;;
+		*)
+			echo "Unknown parameter $1"
+			echo "Acepted parameters: clean kill copy" 
+			shift 1;;
+	esac
+done
