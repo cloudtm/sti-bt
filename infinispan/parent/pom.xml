@@ -158,7 +158,7 @@
       <version.json>20090211</version.json>
       <version.jstl>1.2</version.jstl>
       <version.jta>1.0.0.Final</version.jta>
-      <version.junit>4.10</version.junit>
+      <version.junit>4.13.1</version.junit>
       <version.log4j>1.2.16</version.log4j>
       <version.lucene>3.6.2</version.lucene>
       <version.mc4j>1.2.6</version.mc4j>
