@@ -120,7 +120,7 @@
       <version.cassandra.pool>1.0.0.CR1</version.cassandra.pool>
       <version.cdi>1.0-SP4</version.cdi>
       <version.com.intellij.forms_rt>6.0.5</version.com.intellij.forms_rt>
-      <version.commons.compress>1.4</version.commons.compress>
+      <version.commons.compress>1.21</version.commons.compress>
       <version.commons.codec>1.4</version.commons.codec>
       <version.commons.collections>3.2.1</version.commons.collections>
       <version.commons.dbcp>1.4</version.commons.dbcp>
