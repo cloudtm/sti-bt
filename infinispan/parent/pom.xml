@@ -135,7 +135,7 @@
       <version.hadoop.core>1.0.3</version.hadoop.core>
       <version.hbase>0.94.1</version.hbase>
       <version.hibernate.annotations>3.4.0.GA</version.hibernate.annotations>
-      <version.hibernate.core>3.3.1.GA</version.hibernate.core>
+      <version.hibernate.core>5.4.24.Final</version.hibernate.core>
       <version.hibernate.search>4.2.0.Final</version.hibernate.search>
       <version.jackson>1.9.2</version.jackson>
       <version.javax.cache>0.4</version.javax.cache>
